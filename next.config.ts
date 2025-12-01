@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Required for Vercel serverless compatibility
+  output: "standalone",
 
-const nextConfig: NextConfig = {
-  /* config options here */
+  // Optional, but recommended for App Router
+  reactStrictMode: true,
 };
 
 export default nextConfig;
