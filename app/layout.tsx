@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import "./globals.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
@@ -7,7 +8,7 @@ export const metadata = {
   description: "Next.js + Tailwind Project",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
