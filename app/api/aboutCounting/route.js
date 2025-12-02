@@ -1,14 +1,10 @@
- 
-
-
-
 // import sql from "../../../lib/db";
 
 // export async function GET() {
 //   try {
 //     const rows = await sql`
-//       SELECT * FROM about_counting 
-//       WHERE deleted_at = 0 
+//       SELECT * FROM about_counting
+//       WHERE deleted_at = 0
 //       LIMIT 1
 //     `;
 
@@ -89,10 +85,7 @@
 //   }
 // }
 
-
-
-
-import pool from "@/lib/db";
+import pool from "../../../lib/db";
 
 export async function GET() {
   try {
@@ -102,7 +95,10 @@ export async function GET() {
 
     return Response.json({ status: "success", data: result.rows[0] });
   } catch (error) {
-    return Response.json({ status: "error", error: error.message }, { status: 500 });
+    return Response.json(
+      { status: "error", error: error.message },
+      { status: 500 }
+    );
   }
 }
 
@@ -121,6 +117,9 @@ export async function PUT(req) {
       message: "Updated successfully",
     });
   } catch (error) {
-    return Response.json({ status: "error", error: error.message }, { status: 500 });
+    return Response.json(
+      { status: "error", error: error.message },
+      { status: 500 }
+    );
   }
 }
