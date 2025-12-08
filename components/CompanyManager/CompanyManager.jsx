@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const emptyForm = {
   name: "",
@@ -126,104 +127,262 @@ const CompanyManager = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">
+    <div className="max-w-6xl mx-auto p-6">
+      <motion.h1
+        className="text-3xl font-bold mb-6 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         {editing ? "Edit Company" : "Add Company"}
-      </h1>
+      </motion.h1>
 
-      <form onSubmit={handleSubmit} className="space-y-3 mb-6">
-        {error && <div className="text-red-500">{error}</div>}
+      <motion.form
+        onSubmit={handleSubmit}
+        className="space-y-4 mb-10 max-w-3xl mx-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        {error && (
+          <motion.div
+            className="text-red-600 bg-red-100 p-3 rounded"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {error}
+          </motion.div>
+        )}
 
-        {Object.keys(emptyForm).map((key) => (
-          <input
-            key={key}
-            className="w-full border p-2 rounded"
-            placeholder={key.replace(/_/g, " ").toUpperCase()}
-            value={form[key]}
-            onChange={(e) => setField(key, e.target.value)}
-          />
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {Object.keys(emptyForm).map((key) => (
+            <input
+              key={key}
+              className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={key.replace(/_/g, " ").toUpperCase()}
+              value={form[key]}
+              onChange={(e) => setField(key, e.target.value)}
+              type={
+                key === "email" ? "email" : key === "number" ? "tel" : "text"
+              }
+            />
+          ))}
+        </div>
 
-        <div className="flex gap-2">
+        <div className="flex justify-center gap-4">
           <button
             type="submit"
             disabled={submitting}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="px-6 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
           >
-            {submitting ? "Saving..." : editing ? "Update" : "Create"}
+            {submitting ? (
+              <span className="flex items-center gap-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                Saving...
+              </span>
+            ) : editing ? (
+              "Update"
+            ) : (
+              "Create"
+            )}
           </button>
 
           <button
             type="button"
             onClick={resetForm}
-            className="px-4 py-2 bg-gray-300 rounded"
+            className="px-6 py-2 bg-gray-200 rounded shadow hover:bg-gray-300 transition"
           >
             Reset
           </button>
         </div>
-      </form>
+      </motion.form>
 
-      <h2 className="text-xl font-semibold mb-2">Companies</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-center">Companies</h2>
 
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-center py-10">
+          <svg
+            className="animate-spin h-10 w-10 mx-auto text-blue-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          <p className="mt-3 text-blue-700">Loading companies...</p>
+        </div>
       ) : list.length === 0 ? (
-        <div className="text-gray-500">No companies yet</div>
+        <div className="text-center text-gray-500 py-10">No companies yet</div>
       ) : (
-        <div className="space-y-3">
-          {list.map((c) => (
-            <div
-              key={c.id}
-              className="border rounded p-3 flex justify-between items-start"
-            >
-              <div>
-                <div className="font-semibold">{c.name}</div>
-                <div className="text-sm text-gray-600">{c.location}</div>
+        <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <table className="min-w-full text-left border border-gray-300 hidden md:table">
+            <thead className="bg-blue-100">
+              <tr>
+                <th className="py-2 px-4 border-b">Name</th>
+                <th className="py-2 px-4 border-b">Location</th>
+                <th className="py-2 px-4 border-b">Email</th>
+                <th className="py-2 px-4 border-b">Phone</th>
+                <th className="py-2 px-4 border-b">Links</th>
+                <th className="py-2 px-4 border-b text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <AnimatePresence mode="popLayout">
+                {list.map((c) => (
+                  <motion.tr
+                    key={c.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="border-b hover:bg-blue-50"
+                  >
+                    <td className="py-2 px-4">{c.name}</td>
+                    <td className="py-2 px-4">{c.location}</td>
+                    <td className="py-2 px-4 break-words max-w-xs">
+                      {c.email || "-"}
+                    </td>
+                    <td className="py-2 px-4">{c.number || "-"}</td>
+                    <td className="py-2 px-4 space-x-3">
+                      {c.linkedin_link && (
+                        <a
+                          href={c.linkedin_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline"
+                        >
+                          LinkedIn
+                        </a>
+                      )}
+                      {c.company_website_link && (
+                        <a
+                          href={c.company_website_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline"
+                        >
+                          Website
+                        </a>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 flex justify-center gap-2">
+                      <button
+                        onClick={() => handleEdit(c.id)}
+                        className="bg-yellow-400 rounded px-3 py-1 hover:bg-yellow-500 transition"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(c.id)}
+                        className="bg-red-500 text-white rounded px-3 py-1 hover:bg-red-600 transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+            </tbody>
+          </table>
 
-                <div className="text-sm mt-1">
-                  {c.email && <span className="mr-3">✉ {c.email}</span>}
-                  {c.number && <span className="mr-3">📞 {c.number}</span>}
-                </div>
-
-                <div className="text-xs mt-2">
-                  {c.linkedin_link && (
-                    <a
-                      className="underline"
-                      href={c.linkedin_link}
-                      target="_blank"
-                    >
-                      LinkedIn
-                    </a>
-                  )}
-                  {c.company_website_link && (
-                    <a
-                      className="underline ml-3"
-                      href={c.company_website_link}
-                      target="_blank"
-                    >
-                      Website
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleEdit(c.id)}
-                  className="px-3 py-1 bg-yellow-400 rounded"
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-4">
+            <AnimatePresence>
+              {list.map((c) => (
+                <motion.div
+                  key={c.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="border rounded p-4 shadow-sm bg-white"
                 >
-                  Edit
-                </button>
+                  <h3 className="font-semibold text-lg">{c.name}</h3>
+                  <p className="text-gray-600">{c.location}</p>
+                  <p>
+                    {c.email && (
+                      <span className="block">
+                        <strong>Email:</strong> {c.email}
+                      </span>
+                    )}
+                    {c.number && (
+                      <span className="block">
+                        <strong>Phone:</strong> {c.number}
+                      </span>
+                    )}
+                  </p>
+                  <p className="mt-2 space-x-4">
+                    {c.linkedin_link && (
+                      <a
+                        href={c.linkedin_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        LinkedIn
+                      </a>
+                    )}
+                    {c.company_website_link && (
+                      <a
+                        href={c.company_website_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        Website
+                      </a>
+                    )}
+                  </p>
 
-                <button
-                  onClick={() => handleDelete(c.id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+                  <div className="flex gap-3 mt-4">
+                    <button
+                      onClick={() => handleEdit(c.id)}
+                      className="flex-1 bg-yellow-400 rounded py-2 hover:bg-yellow-500 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(c.id)}
+                      className="flex-1 bg-red-500 text-white rounded py-2 hover:bg-red-600 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       )}
     </div>
