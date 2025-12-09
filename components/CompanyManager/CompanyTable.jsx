@@ -8,7 +8,6 @@ import {
   Phone,
   Linkedin,
   Globe,
-  ExternalLink,
   Edit3,
   Trash2,
 } from "lucide-react";
@@ -148,40 +147,47 @@ const CompanyTable = () => {
         <>
           {/* Desktop Table */}
           <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50">
+            <table className="w-full  text-sm border-collapse border-2 ">
+              <thead className="bg-gray-50  ">
                 <tr>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left border-r truncate font-extrabold text-gray-700">
+                    No.
+                  </th>
+                  <th className="px-6 py-4 text-left border-r truncate font-extrabold text-gray-700">
                     Company
                   </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left border-r truncate font-extrabold text-gray-700">
                     Location
                   </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left border-r truncate font-extrabold text-gray-700">
                     Contact
                   </th>
-                  <th className="px-6 py-4 text-left font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-left border-r truncate font-extrabold text-gray-700">
                     Links
                   </th>
-                  <th className="px-6 py-4 text-center font-semibold text-gray-700">
+                  <th className="px-6 py-4 text-center border-r truncate font-extrabold text-gray-700">
                     Actions
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y bg-white">
-                {filtered.map((c) => (
+              <tbody className="divide-y border-2 bg-white">
+                {filtered.map((c, index) => (
                   <tr key={c.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium">{c.name}</td>
+                    <td className="px-6 py-4 border-r font-medium">
+                      {index + 1}
+                    </td>
 
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-6 py-4 border-r font-medium">{c.name}</td>
+
+                    <td className="px-6 py-4 border-r  text-gray-700">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-green-600" />
                         {c.location}
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-6 py-4 border-r text-gray-700">
                       <div className="space-y-1">
                         {c.email && (
                           <div className="flex items-center gap-2">
@@ -198,7 +204,7 @@ const CompanyTable = () => {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 border-r">
                       <div className="space-y-1">
                         {c.linkedin_link && (
                           <a
@@ -224,14 +230,14 @@ const CompanyTable = () => {
                       <div className="flex items-center justify-center gap-3">
                         <a
                           href={`/insert?edit=${c.id}`}
-                          className="p-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md"
+                          className="p-2 border-2 cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-white rounded-md"
                         >
                           <Edit3 className="w-4 h-4" />
                         </a>
 
                         <button
                           onClick={() => handleDelete(c.id)}
-                          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-md"
+                          className="p-2 border-2 cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded-md"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

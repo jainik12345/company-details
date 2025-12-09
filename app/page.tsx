@@ -33,7 +33,7 @@ export default function HomePage() {
         <div className="mb-8 flex justify-end">
           <Link
             href="/insert"
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-sm transition"
+            className="inline-flex border-2 items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-sm transition"
           >
             <Plus className="w-5 h-5" />
             Add Company
