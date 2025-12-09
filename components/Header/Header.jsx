@@ -3,56 +3,44 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const Header =() => {
+const Header = () => {
   const pathname = usePathname();
 
-  const links = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Company", path: "/contact" },
-  ];
+  const links = [{ name: "Dashboard", path: "/" }];
 
   return (
-    <header className="bg-blue-600 text-white p-4">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
-        {/* LEFT: LOGO */}
-        <div className="text-xl font-bold">
-          <Link href="/">CompanyLogo</Link>
+    <header className="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="text-2xl font-bold">
+            <Link href="/">🏢 CompanyHub</Link>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex space-x-8">
+            {links.map((link) => {
+              const isActive = pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className={`relative font-semibold py-2 px-3 transition-all duration-300 hover:text-blue-200 ${
+                    isActive ? "text-white shadow-md" : "text-white/90"
+                  }`}
+                >
+                  {link.name}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full"></span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
-
-        {/* MIDDLE: NAVIGATION */}
-        <nav className="flex gap-8">
-          {links.map((link) => {
-            const isActive = pathname === link.path;
-
-            return (
-              <Link
-                key={link.path}
-                href={link.path}
-                className={`relative font-medium transition-all
-                  ${isActive ? "text-red-400" : "text-white"}
-                `}
-              >
-                {link.name}
-
-                {/* UNDERLINE ANIMATION */}
-                <span
-                  className={`absolute -bottom-1 h-0.5 w-0 bg-red-400 transition-all duration-300
-                    ${
-                      isActive
-                        ? "w-full left-0"
-                        : "group-hover:w-full group-hover:left-0"
-                    }
-                  `}
-                ></span>
-              </Link>
-            );
-          })}
-        </nav>
       </div>
     </header>
   );
-}
-
+};
 
 export default Header;
