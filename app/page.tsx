@@ -2,40 +2,48 @@
 
 import CompanyTable from "@/components/CompanyManager/CompanyTable";
 import { Plus, Database } from "lucide-react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className=" bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* HEADER */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="mb-12"
         >
-          <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/50 mb-8">
-            <Database className="w-12 h-12 text-blue-600" />
+          <div className="flex items-center gap-4">
+            <div className="p-4 rounded-xl bg-white shadow-sm border">
+              <Database className="w-10 h-10 text-blue-600" />
+            </div>
+
             <div>
-              <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-gray-900 via-gray-700 to-slate-900 bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold text-gray-900">
                 Company Dashboard
               </h1>
-              <p className="text-xl text-slate-600 mt-2 font-medium">
-                Manage all your companies efficiently
-              </p>
+              <p className="text-gray-600 mt-1">Quick overview & management</p>
             </div>
           </div>
-          <motion.a
-            href="/insert"
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white px-10 py-6 rounded-3xl font-bold text-xl shadow-2xl hover:shadow-3xl hover:from-emerald-600 hover:to-green-700 transition-all duration-500 transform hover:-translate-y-1 hover:scale-[1.02]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" />
-            Add New Company
-          </motion.a>
         </motion.div>
 
-        <CompanyTable />
+        {/* ADD BUTTON */}
+        <div className="mb-8 flex justify-end">
+          <Link
+            href="/insert"
+            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-sm transition"
+          >
+            <Plus className="w-5 h-5" />
+            Add Company
+          </Link>
+        </div>
+
+        {/* TABLE */}
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <CompanyTable />
+        </div>
       </div>
     </main>
   );
